@@ -13,8 +13,9 @@
 
 // TODO: 匯入型別定義
 // 提示：需要匯入 CreateProductParams, CreateProductResponse 等型別
-import type {} from '@/types/product'
+import type {TCreateProductParams,TCreateProductResponse, TDeleteProductResponse, TEditProductParams, TEditProductResponse, TGetProductsResponse, TUploadImageResponse} from '@/types/product'
 import axios from 'axios'
+import type { AxiosResponse } from 'axios'
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 const API_PATH = import.meta.env.VITE_API_PATH
@@ -51,7 +52,10 @@ productApi.interceptors.response.use(
 // 提示：
 // - 參數 params 是一個物件，包含可選的 page 和 category 屬性（都是字串）
 // - 回傳值是 Promise<AxiosResponse<GetProductsResponse>>
-export const apiGetProducts = (params) =>
+export const apiGetProducts = (params:{
+  page?:string,
+  category?:string
+}):Promise<AxiosResponse<TGetProductsResponse>> =>
   productApi.get(`/v2/api/${API_PATH}/admin/products`, {
     params,
   })
@@ -60,7 +64,7 @@ export const apiGetProducts = (params) =>
 // 提示：
 // - 參數 params 的型別是 CreateProductParams
 // - 回傳值是 Promise<AxiosResponse<CreateProductResponse>>
-export const apiCreateProduct = (params) =>
+export const apiCreateProduct = (params:TCreateProductParams):Promise<AxiosResponse<TCreateProductResponse>> =>
   productApi.post(`/v2/api/${API_PATH}/admin/product`, {
     data: params,
   })
@@ -69,7 +73,7 @@ export const apiCreateProduct = (params) =>
 // 提示：
 // - 參數 params 的型別是 EditProductParams
 // - 回傳值是 Promise<AxiosResponse<EditProductResponse>>
-export const apiEditProduct = (params) => {
+export const apiEditProduct = (params:TEditProductParams):Promise<AxiosResponse<TEditProductResponse>> => {
   const { data, id } = params
   return productApi.put(`/v2/api/${API_PATH}/admin/product/${id}`, {
     data,
@@ -80,7 +84,7 @@ export const apiEditProduct = (params) => {
 // 提示：
 // - 參數 productId 是字串型別
 // - 回傳值是 Promise<AxiosResponse<DeleteProductResponse>>
-export const apiDeleteProduct = (productId) =>
+export const apiDeleteProduct = (productId:string):Promise<AxiosResponse<TDeleteProductResponse>> =>
   productApi.delete(`/v2/api/${API_PATH}/admin/product/${productId}`)
 
 // TODO: 為 apiUploadImage 函式加上型別註解
@@ -88,5 +92,5 @@ export const apiDeleteProduct = (productId) =>
 // - 參數 file 是 FormData 型別
 // - 回傳值是 Promise<AxiosResponse<UploadImageResponse>>
 // - 這是一個 async 函式
-export const apiUploadImage = async (file) =>
+export const apiUploadImage = async (file:FormData):Promise<AxiosResponse<TUploadImageResponse>> =>
   productApi.post(`/v2/api/${API_PATH}/admin/upload`, file)
