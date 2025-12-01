@@ -9,7 +9,7 @@ interface DeleteModalProps {
 
 const { title, content } = defineProps<DeleteModalProps>()
 
-const modalRef = useTemplateRef('modalRef')
+const modalRef = useTemplateRef<HTMLElement>('modalRef')
 let modal: Modal | null = null
 
 let onConfirmDelete: (() => void) | null = null
