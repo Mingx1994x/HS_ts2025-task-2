@@ -1,14 +1,14 @@
-import type { ProductData } from '@/types/product'
+import type { TProductData } from '@/types/product'
 import { ref, type Ref } from 'vue'
 
 interface UseProductFormResult {
-  form: Ref<ProductData>
+  form: Ref<TProductData>
   formTitle: Ref<string>
-  loadProduct: (data: ProductData | null) => void
+  loadProduct: (data: TProductData | null) => void
   resetForm: () => void
 }
 
-const getInitialProductData = (): ProductData => ({
+const getInitialProductData = (): TProductData => ({
   id: '',
   title: '',
   origin_price: 0,
@@ -24,10 +24,10 @@ const getInitialProductData = (): ProductData => ({
 })
 
 export function useProductForm(): UseProductFormResult {
-  const form = ref<ProductData>(getInitialProductData())
+  const form = ref<TProductData>(getInitialProductData())
   const formTitle = ref('新增商品')
 
-  const loadProduct = (data: ProductData | null): void => {
+  const loadProduct = (data: TProductData | null): void => {
     if (data) {
       // 編輯模式：載入資料
       form.value = { ...data }
