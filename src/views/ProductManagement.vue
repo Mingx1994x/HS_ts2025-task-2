@@ -48,7 +48,9 @@ const pagination = ref<TPagination>({
   category: '',
 })
 
+const isLoading=ref<boolean>(false)
 const getProducts = async () => {
+  isLoading.value=true
   try {
     const res = await apiGetProducts({
       page: currentPage.value,
@@ -58,6 +60,8 @@ const getProducts = async () => {
     pagination.value = res.data.pagination
   } catch (error) {
     alert('取得產品列表失敗')
+  }finally{
+    isLoading.value=false
   }
 }
 
@@ -133,7 +137,7 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
   </div>
   <div class="card shadow-sm rounded-lg flex-grow-1">
     <div class="card-body p-4">
-      <div class="table-responsive">
+      <div class="table-responsive" v-if="!isLoading">
         <table class="table table-hover align-middle">
           <thead>
             <tr>
@@ -185,7 +189,15 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
           </tbody>
         </table>
       </div>
-
+      <div
+        v-else
+        class="d-flex justify-content-center align-items-center"
+        style="height: calc(100vh - 98px)"
+      >
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       <nav class="d-flex justify-content-center mt-4">
         <ul class="pagination">
           <li class="page-item">
