@@ -4,13 +4,14 @@ import { sidebarData } from '@/constants'
 
 <template>
   <div class="sidebar d-flex flex-column">
-    <h4 class="text-white text-center mb-5">植感生活</h4>
+    <h4 class="text-white text-center mb-5">Last Masquerade</h4>
     <nav class="nav nav-pills flex-column">
       <RouterLink
         v-for="sidebarItem in sidebarData"
         :to="sidebarItem.path"
         activeClass="active"
         class="nav-link"
+        :key="sidebarItem.name"
       >
         <i class="fas fa-box-open me-3" style="width: 1rem"></i>{{ sidebarItem.name }}
       </RouterLink>
