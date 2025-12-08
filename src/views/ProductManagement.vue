@@ -60,6 +60,14 @@ const getProducts = async () => {
     alert('取得產品列表失敗')
   }
 }
+
+// 頁面切換
+const handlePagination=(page:number)=>{
+  // if(String(page)===currentPage.value) return
+  currentPage.value=String(page)
+  getProducts()
+}
+
 onMounted(() => {
   getProducts()
 })
@@ -182,7 +190,7 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
         <ul class="pagination">
           <li class="page-item">
             <button
-              @click="currentPage = String(Number(currentPage) - 1)"
+              @click="handlePagination(Number(currentPage) - 1)"
               :disabled="!pagination?.has_pre"
               type="button"
               class="page-link"
@@ -194,7 +202,7 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
           </li>
           <li v-for="pageNum in pagination?.total_pages" class="page-item" :key="pageNum">
             <button
-              @click="currentPage = pageNum.toString()"
+              @click="handlePagination(pageNum)"
               :disabled="currentPage === pageNum.toString()"
               type="button"
               class="page-link"
@@ -205,7 +213,7 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
           </li>
           <li class="page-item">
             <button
-              @click="currentPage = String(Number(currentPage) + 1)"
+              @click="handlePagination(Number(currentPage) + 1)"
               :disabled="!pagination?.has_next"
               class="page-link"
               :class="{ disabled: !pagination?.has_next }"
