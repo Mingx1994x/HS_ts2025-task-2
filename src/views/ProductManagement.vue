@@ -90,6 +90,8 @@ const tempProduct = ref<TProductData>(getInitialProductData())
 const openModal = (product:TProductData|null = null) => {
   if (product) {
     tempProduct.value = { ...product, imagesUrl: product.imagesUrl ? [...product.imagesUrl] : [''] }
+  }else{
+    tempProduct.value=getInitialProductData()
   }
 
   productModalRef.value?.openModal()
