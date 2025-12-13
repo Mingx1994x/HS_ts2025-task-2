@@ -22,11 +22,14 @@ export type TCreateCouponResponse=TMessageResponse
 export type TDeleteCouponResponse=TMessageResponse
 export type TEditCouponResponse=TMessageResponse
 
-type TCoupon=Omit<TCouponData,'code'>
+export type TCouponDetail=TCouponData & {
+  id:string,
+  num:number,
+}
 
 export type TGetCouponResponse={
   success:boolean,
-  coupons:TCoupon[],
+  coupons:TCouponDetail[],
   pagination:TPagination,
   messages:unknown[]
 }
