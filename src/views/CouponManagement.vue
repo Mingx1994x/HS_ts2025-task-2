@@ -14,10 +14,10 @@ const getCoupons = async () => {
     const res = await apiGetCoupons({
       page: currentPage.value,
     })
-    console.log(res)
+    console.log("取得優惠券成功",res);
     coupons.value=res.data.coupons
   } catch (error) {
-    console.log(error)
+    console.error(error)
     alert('取得優惠券失敗，請稍後再試')
   }finally{
     isLoading.value=false
@@ -39,10 +39,9 @@ const editCoupon=async()=>{
         code
       }
     })
-    console.log(res);
-    
+    console.log("更新優惠券成功",res);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     alert('更新優惠券失敗，請稍後再試')
   }
 }
@@ -118,7 +117,7 @@ const functionMode=ref<TFunctionMode>("create")
 const openCouponModal=(coupon:TCouponDetail|null=null)=>{
   
   if(coupon){
-    tempCoupon.value=coupon
+    tempCoupon.value={...coupon}
     functionMode.value='edit'
   }else{
     tempCoupon.value=getInitialCoupon()
@@ -131,9 +130,9 @@ const openCouponModal=(coupon:TCouponDetail|null=null)=>{
 const createCoupon=async(CouponData:TCouponData)=>{
   try {
     const res=await apiCreateCoupon(CouponData)
-    console.log(res);
+    console.log("新增優惠券成功",res);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     alert('新增優惠券失敗，請稍後再試')
   }
 }
