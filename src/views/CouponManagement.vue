@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { apiGetCoupons } from '@/api/coupon'
-import type { TCouponDetail } from '@/types/coupon'
 import {  onMounted, ref, useTemplateRef } from 'vue'
+import { apiDeleteCoupon, apiGetCoupons } from '@/api/coupon'
 import CouponModal from '@/components/CouponModal.vue'
+import DeleteModal from '@/components/DeleteModal.vue'
+
+import type { TCouponDetail } from '@/types/coupon'
+
 const coupons=ref<TCouponDetail[]>([])
 const currentPage = ref<string>('1')
 const isLoading=ref<boolean>(false)
@@ -41,6 +44,7 @@ const getInitialCoupon=():TCouponDetail=>({
 const tempCoupon=ref<TCouponDetail>(getInitialCoupon());
 
 const couponModal=useTemplateRef<InstanceType<typeof CouponModal>>('couponModalRef')
+const couponDeleteModal=useTemplateRef<InstanceType<typeof DeleteModal>>('couponDeleteModalRef')
 
 type TFunctionMode= "create" | "edit"
 const functionMode=ref<TFunctionMode>("create")
@@ -58,6 +62,23 @@ const openCouponModal=(coupon:TCouponDetail|null=null)=>{
   console.log("應該要傳入的 coupon 資料",tempCoupon.value);
   console.log("應該要傳入的 mode",functionMode.value);
   couponModal.value?.openModal()
+}
+
+const openDeleteModal=(id:string)=>{
+  // console.log("欲刪除的優惠券 ID",id);
+  couponDeleteModal.value?.openModal(()=>deleteCoupon(id))
+}
+
+const deleteCoupon=async(id:string)=>{
+  try {
+    await apiDeleteCoupon(id)
+    
+  } catch (error) {
+    console.error(error);
+    alert('刪除失敗，請稍後再試')
+  } finally{
+    getCoupons()
+  }
 }
 </script>
 <template>
@@ -112,6 +133,7 @@ const openCouponModal=(coupon:TCouponDetail|null=null)=>{
                 <button
                   type="button"
                   class="btn btn-sm btn-outline-danger rounded-lg"
+                  @click="openDeleteModal(coupon.id)"
                 >
                   刪除
                 </button>
@@ -138,4 +160,5 @@ const openCouponModal=(coupon:TCouponDetail|null=null)=>{
       :function-mode="functionMode"
       @get-coupons="getCoupons"
       />
+    <DeleteModal ref="couponDeleteModalRef" title="刪除優惠券" content="確定要刪除優惠券嗎？"/>
 </template>
