@@ -19,7 +19,7 @@ import { apiDeleteProduct, apiGetProducts } from '@/api/products'
 
 import DeleteModal from '@/components/DeleteModal.vue'
 import ProductModal from '@/components/ProductModal.vue'
-
+import LayoutPagination from '@/components/LayoutPagination.vue'
 // TODO: 匯入型別定義
 // 提示：從 @/types/product 匯入 Pagination, ProductData
 import type { TPagination, TProductData } from '@/types/product'
@@ -66,9 +66,8 @@ const getProducts = async () => {
 }
 
 // 頁面切換
-const handlePagination=(page:number)=>{
-  // if(String(page)===currentPage.value) return
-  currentPage.value=String(page)
+const handlePagination=(page:string)=>{
+  currentPage.value=page
   getProducts()
 }
 
@@ -198,45 +197,10 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <nav class="d-flex justify-content-center mt-4">
-        <ul class="pagination">
-          <li class="page-item">
-            <button
-              @click="handlePagination(Number(currentPage) - 1)"
-              :disabled="!pagination?.has_pre"
-              type="button"
-              class="page-link"
-              :class="{ disabled: !pagination?.has_pre }"
-              aria-label="Previous"
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </button>
-          </li>
-          <li v-for="pageNum in pagination?.total_pages" class="page-item" :key="pageNum">
-            <button
-              @click="handlePagination(pageNum)"
-              :disabled="currentPage === pageNum.toString()"
-              type="button"
-              class="page-link"
-              :class="{ active: currentPage === pageNum.toString() }"
-            >
-              {{ pageNum }}
-            </button>
-          </li>
-          <li class="page-item">
-            <button
-              @click="handlePagination(Number(currentPage) + 1)"
-              :disabled="!pagination?.has_next"
-              class="page-link"
-              :class="{ disabled: !pagination?.has_next }"
-              type="button"
-              aria-label="Next"
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </button>
-          </li>
-        </ul>
-      </nav>
+      <LayoutPagination
+        :pagination="pagination"
+        @handle-pagination="handlePagination"
+       />
     </div>
   </div>
 
