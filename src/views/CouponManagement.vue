@@ -3,11 +3,19 @@ import {  onMounted, ref, useTemplateRef } from 'vue'
 import { apiDeleteCoupon, apiGetCoupons } from '@/api/coupon'
 import CouponModal from '@/components/CouponModal.vue'
 import DeleteModal from '@/components/DeleteModal.vue'
-
+import LayoutPagination from '@/components/LayoutPagination.vue'
 import type { TCouponDetail } from '@/types/coupon'
+import type { TPagination } from '@/types/product'
 
 const coupons=ref<TCouponDetail[]>([])
 const currentPage = ref<string>('1')
+const pagination = ref<TPagination>({
+  total_pages: 0,
+  current_page: 0,
+  has_pre: false,
+  has_next: false,
+  category: '',
+})  
 const isLoading=ref<boolean>(false)
 // 取得優惠券
 const getCoupons = async () => {
@@ -18,12 +26,18 @@ const getCoupons = async () => {
     })
     console.log("取得優惠券成功",res);
     coupons.value=res.data.coupons
+    pagination.value=res.data.pagination
   } catch (error) {
     console.error(error)
     alert('取得優惠券失敗，請稍後再試')
   }finally{
     isLoading.value=false
   }
+}
+
+const handlePagination=(page:string)=>{
+  currentPage.value=page
+  getCoupons()
 }
 
 
@@ -152,6 +166,10 @@ const deleteCoupon=async(id:string)=>{
         </div>
       </div>
     </div>
+    <LayoutPagination 
+      :pagination="pagination"
+      @handle-pagination="handlePagination"
+    />
   </div>
    <!-- 優惠券 Modal -->
     <CouponModal 
