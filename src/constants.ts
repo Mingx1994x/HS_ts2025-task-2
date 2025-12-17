@@ -12,3 +12,14 @@ export const sidebarData = [
     name: '優惠券管理',
   },
 ] as const
+
+export const navbarData=[
+  {
+    path:'/products',
+    name:'產品列表'
+  },
+  {
+    path:'/login',
+    name:'後台登入'
+  },
+] as const

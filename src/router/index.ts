@@ -1,15 +1,37 @@
 import Dashboard from '@/views/DashboardView.vue'
+import FrontLayout from '@/views/FrontLayout.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '', redirect: 'product-management' },
     {
       path: '/',
+      component:FrontLayout,
+      children:[
+        {
+          path:'',
+          name: 'homePage',
+          component: () => import('@/views/HomeView.vue'),
+        },
+        {
+          path:'products',
+          name: 'productList',
+          component: () => import('@/views/ProductList.vue'),
+        },
+      ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/views/LoginView.vue'),
+    },
+    {
+      path: '/dashboard',
       name: 'dashboard',
       component: Dashboard,
       children: [
+        { path: '', redirect: 'product-management' },
         {
           path: '/product-management',
           name: 'product-management',
@@ -26,11 +48,6 @@ const router = createRouter({
           component: () => import('@/views/CouponManagement.vue'),
         },
       ],
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('@/views/LoginView.vue'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
