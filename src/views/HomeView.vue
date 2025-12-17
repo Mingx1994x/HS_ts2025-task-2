@@ -1,22 +1,29 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
 
 </script>
 <template>
   <section id="banner-section" class="banner-image d-flex align-items-center justify-content-center pt-5"
-    style="background-image: url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&q=80&w=1920'); margin-top: 56px;">
+    style="background-image: url('https://images.unsplash.com/photo-1514306191717-452ec28c7814?auto=format&fit=crop&q=80&w=1920')">
     <div class="banner-mask"></div>
     <div class="container banner-content text-center text-white">
       <h2 class="text-uppercase mb-3">歡迎來到永恆的化妝舞會</h2>
       <p class="lead mb-4">
         在陰影中，美學永存。探索我們的華麗收藏。
       </p>
-      <a href="#product-section" class="btn btn-primary btn-lg text-uppercase">探索收藏</a>
+      <RouterLink 
+        class="btn btn-primary btn-lg text-uppercase"
+        to="/products"
+      >
+      探索收藏
+    </RouterLink>
     </div>
   </section>
   <section id="product-section" class="product-section container">
     <div class="text-center mb-5">
       <h2 class="text-uppercase">精選商品</h2>
-      <p class="text-muted">我們為您挑選了最具神秘風格的獨特單品。</p>
+      <p class="text-neutral">我們為您挑選了最具神秘風格的獨特單品。</p>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -26,8 +33,8 @@
             class="card-img-top object-fit-cover" alt="華麗的黑色蕾絲面具" loading="lazy" style="height: 300px;" />
           <div class="card-body text-center">
             <h3 class="product-card-title text-uppercase">暗夜使者面具</h3>
-            <p class="product-card-price my-2">NT$ 2,800</p>
-            <p class="card-text text-muted">以義大利傳統工藝打造的精緻蕾絲面具，低調中盡顯奢華。</p>
+            <p class="product-card-price text-primary my-2">NT$ 2,800</p>
+            <p class="card-text text-neutral">以義大利傳統工藝打造的精緻蕾絲面具，低調中盡顯奢華。</p>
             <a href="mailto:order@lastmasquerade.com?subject=訂購暗夜使者面具" class="btn btn-primary btn-sm mt-3">立即訂購</a>
           </div>
         </div>
@@ -38,8 +45,8 @@
             class="card-img-top object-fit-cover" alt="鑲有黑曜石的銀色項鍊" loading="lazy" style="height: 300px;"/>
           <div class="card-body text-center">
             <h3 class="product-card-title text-uppercase">黑曜石的嘆息</h3>
-            <p class="product-card-price my-2">NT$ 5,600</p>
-            <p class="card-text text-muted">精工雕琢的純銀項鍊，搭配神祕的黑曜石，散發難以抗拒的魅力。</p>
+            <p class="product-card-price text-primary my-2">NT$ 5,600</p>
+            <p class="card-text text-neutral">精工雕琢的純銀項鍊，搭配神祕的黑曜石，散發難以抗拒的魅力。</p>
             <a href="mailto:order@lastmasquerade.com?subject=訂購黑曜石的嘆息" class="btn btn-primary btn-sm mt-3">立即訂購</a>
           </div>
         </div>
@@ -53,16 +60,12 @@
             class="card-img-top object-fit-cover" alt="充滿哥德式風格的房間裝飾" loading="lazy" style="height: 300px;"> -->
             <div class="card-body text-center">
               <h3 class="product-card-title text-uppercase">哥德式夜曲</h3>
-              <p class="product-card-price my-2">NT$ 9,900</p>
-              <p class="card-text text-muted">一盞充滿歷史感的鑄鐵燭臺，為您的空間點亮一絲華麗的陰影。</p>
+              <p class="product-card-price text-primary my-2">NT$ 9,900</p>
+              <p class="card-text text-neutral">一盞充滿歷史感的鑄鐵燭臺，為您的空間點亮一絲華麗的陰影。</p>
               <a href="mailto:order@lastmasquerade.com?subject=訂購哥德式夜曲" class="btn btn-primary btn-sm mt-3">立即訂購</a>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="slot-placeholder mt-5">
-        之後會用 Section SDD 產生「更多商品展示內容」，請開發者**整段貼在兩個註解中間**來替換。
       </div>
     </div>
 
@@ -98,10 +101,10 @@
         </div>
         <div class="col-md-6">
           <h3 class="text-uppercase">品牌願景：黑暗美學</h3>
-          <p class="text-muted">
+          <p class="text-neutral">
             Last Masquerade 相信，真正的華麗藏於陰影之中。我們的品牌靈感來自於古老的貴族舞會和哥德式藝術，致力於發掘並呈現那種既神祕又極具設計感的獨特美學。我們拒絕平庸，專注於那些能喚醒靈魂深處浪漫情懷的單品。
           </p>
-          <p class="text-muted">
+          <p class="text-neutral">
             我們的每一件產品，都是一場對日常生活的微型反叛，一次對自身獨特性的宣告。戴上或擁有它們，您不是在跟隨潮流，而是成為潮流的創造者。
           </p>
           <a href="https://www.google.com/search?q=Last+Masquerade+Brand+Story" class="text-decoration-underline"
@@ -110,11 +113,6 @@
           </a>
         </div>
       </div>
-
-      <div class="slot-placeholder">
-        之後會用 Section SDD 產生「創辦人介紹或服務優勢等更多關於品牌的故事」，請開發者**整段貼在兩個註解中間**來替換。
-      </div>
-
     </div>
   </section>
   <section id="contact-section" class="contact-section text-center text-white">
@@ -152,11 +150,60 @@
           </div>
         </div>
       </div>
-
-      <div class="slot-placeholder">
-        之後會用 Section SDD 產生「聯絡表單或其他聯絡元件」，請開發者**整段貼在兩個註解中間**來替換。
-      </div>
-
     </div>
   </section>
 </template>
+<style scoped lang="scss">
+  .banner{
+    &-image {
+      height: 100vh;
+      /* 確保主視覺區在行動裝置有足夠高度 */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+
+    &-content {
+      z-index: 10;
+      h1 {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      /* RWD 標題字體大小 */
+      letter-spacing: 0.2em;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+      }
+
+      p {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      }
+
+    &-mask{
+      background: rgba(0, 0, 0, 0.2);
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.product{
+  &-section{
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  &-card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+   
+  &-card-price {
+      font-size: 1.5rem;
+      // color: map-get($theme-colors, 'primary');
+      font-weight: bold;
+    }
+  }
+  
+</style>

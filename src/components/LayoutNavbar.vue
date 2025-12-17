@@ -4,15 +4,16 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-white fixed-top shadow-sm" style="z-index: 1000;">
     <div class="container">
-      <a class="navbar-brand text-uppercase" href="#banner-section">
+      <RouterLink 
+        class="navbar-brand text-uppercase"
+        to="/"
+      >
         <h1>Last Masquerade</h1>
-      </a>
-
+      </RouterLink>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
           <li 
