@@ -1,6 +1,29 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+  import { onMounted, ref } from 'vue';
+  import { RouterLink } from 'vue-router';
 
+  import { getProductsAll } from '@/api/customerProducts';
+import type { TProduct } from '@/types/customer/product'; 
+import { pickRandomItemsByCategory } from '@/utils/dataProcess';
+
+const selectedProducts=ref<TProduct[]>([])
+
+const getSelectProducts=async()=>{
+  try {
+    const res=await getProductsAll()
+    console.log(res);
+    selectedProducts.value=pickRandomItemsByCategory(res.data.products,3)
+    console.log("精選",selectedProducts.value);
+    
+  } catch (error) {
+    console.error(error);
+    alert('取得商品失敗')
+  }
+} 
+
+onMounted(()=>{
+  getSelectProducts()
+})
 
 </script>
 <template>
@@ -27,43 +50,18 @@ import { RouterLink } from 'vue-router';
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div class="col">
+      <div 
+        class="col" 
+        v-for="product in selectedProducts"
+        :key="product.id">
         <div class="card h-100">
-          <img src="https://images.unsplash.com/photo-1507643179773-3e975d7ac515?auto=format&fit=crop&q=80&w=600"
-            class="card-img-top object-fit-cover" alt="華麗的黑色蕾絲面具" loading="lazy" style="height: 300px;" />
-          <div class="card-body text-center">
-            <h3 class="product-card-title text-uppercase">暗夜使者面具</h3>
-            <p class="product-card-price text-primary my-2">NT$ 2,800</p>
-            <p class="card-text text-neutral">以義大利傳統工藝打造的精緻蕾絲面具，低調中盡顯奢華。</p>
-            <a href="mailto:order@lastmasquerade.com?subject=訂購暗夜使者面具" class="btn btn-primary btn-sm mt-3">立即訂購</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?auto=format&fit=crop&q=80&w=600"
-            class="card-img-top object-fit-cover" alt="鑲有黑曜石的銀色項鍊" loading="lazy" style="height: 300px;"/>
-          <div class="card-body text-center">
-            <h3 class="product-card-title text-uppercase">黑曜石的嘆息</h3>
-            <p class="product-card-price text-primary my-2">NT$ 5,600</p>
-            <p class="card-text text-neutral">精工雕琢的純銀項鍊，搭配神祕的黑曜石，散發難以抗拒的魅力。</p>
-            <a href="mailto:order@lastmasquerade.com?subject=訂購黑曜石的嘆息" class="btn btn-primary btn-sm mt-3">立即訂購</a>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card h-100">
-          <img src="https://source.unsplash.com/600x400/?dark,candelabra,interior" class="card-img-top object-fit-cover"
-            alt="充滿哥德式風格的房間裝飾" loading="lazy" style="height: 300px;" />
-          <div class="card-body text-center">
-            <!-- <img src="https://images.unsplash.com/photo-1536502225820-914c14624b5e?auto=format&fit=crop&q=80&w=600"
-            class="card-img-top object-fit-cover" alt="充滿哥德式風格的房間裝飾" loading="lazy" style="height: 300px;"> -->
-            <div class="card-body text-center">
-              <h3 class="product-card-title text-uppercase">哥德式夜曲</h3>
-              <p class="product-card-price text-primary my-2">NT$ 9,900</p>
-              <p class="card-text text-neutral">一盞充滿歷史感的鑄鐵燭臺，為您的空間點亮一絲華麗的陰影。</p>
-              <a href="mailto:order@lastmasquerade.com?subject=訂購哥德式夜曲" class="btn btn-primary btn-sm mt-3">立即訂購</a>
-            </div>
+          <img :src="product.imageUrl"
+            class="card-img-top object-fit-cover" :alt="product.title" loading="lazy" style="height: 300px;" />
+          <div class="card-body text-center d-flex flex-column">
+            <h3 class="product-card-title text-uppercase">{{product.title}}</h3>
+            <p class="product-card-price text-primary my-2">{{ `NT$ ${product.price.toLocaleString()}` }}</p>
+            <p class="card-text text-neutral">{{ product.description }}</p>
+            <RouterLink to="/products" class="btn btn-primary btn-sm mt-auto align-self-center">立即訂購</RouterLink>
           </div>
         </div>
       </div>
