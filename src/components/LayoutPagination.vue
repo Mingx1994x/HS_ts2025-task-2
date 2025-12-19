@@ -59,3 +59,25 @@ const handlePagination=(page:number)=>{
         </ul>
       </nav>
 </template>
+<style scoped lang="scss">
+  /* 分頁按鈕樣式 */
+    .pagination{
+      .page-link {
+        background-color: #211238;
+        border-color: rgba(255, 183, 3, 0.3);
+        color: var(--bs-light);
+
+        
+        &:hover {
+          background-color: rgba(255, 183, 3, 0.2);
+          color: var(--bs-primary);
+        }
+        
+        &.active{
+          background-color: var(--bs-primary);
+          border-color: var(--bs-primary);
+          color: var(--bs-dark);
+        }
+      } 
+    }
+</style>
