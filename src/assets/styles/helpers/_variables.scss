@@ -308,6 +308,8 @@ $danger: $red !default;
 // $light:         $gray-100 !default;
 $light: #f0e6ef !default;
 $neutral: #a093af !default;
+$neutral-700: #212529 !default;
+
 // $dark:          $gray-900 !default;
 $dark: #1a0b2e !default;
 $dark-300: #2d1e42 !default;
@@ -323,6 +325,7 @@ $theme-colors: (
   'danger': $danger,
   'light': $light,
   'neutral': $neutral,
+  'neutral-700': $neutral-700,
   'dark-300': $dark-300,
   'dark': $dark,
 ) !default;
