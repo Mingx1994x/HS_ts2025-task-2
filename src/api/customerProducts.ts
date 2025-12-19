@@ -1,7 +1,7 @@
 import axios from "axios"
 
 import type { AxiosResponse } from "axios"
-import type { TGetProductsResponse,TGetProductByIdResponse, TGetProductsAllResponse } from "@/types/customer/product"
+import type { TGetProductsResponse,TGetProductByIdResponse, TGetProductsAllResponse, TProduct } from "@/types/customer/product"
 
 const {VITE_BASE_URL,VITE_API_PATH} =import.meta.env
 
@@ -16,3 +16,6 @@ export const getProducts=(params:{page?:string,category?:string}):Promise<AxiosR
 
 export const getProductById=(id:string):Promise<AxiosResponse<TGetProductByIdResponse>>=>(hexStoreApi.get(`/v2/api/${VITE_API_PATH}/products/${id}`))
 
+export function getProductsCategories(data:TProduct[]):string[]{
+  return [...new Set(data.map(item => item.category))]
+}
