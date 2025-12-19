@@ -1,3 +1,5 @@
+import type { TPagination } from "../product";
+
 export type TProduct = {
     id:           string;
     category:     string;
@@ -13,10 +15,17 @@ export type TProduct = {
     unit:         string;
 }
 
+export type TGetProductsAllResponse={
+  success:  boolean;
+    products: TProduct[];
+    messages: unknown[];
+}
+
 export type TGetProductsResponse={
   success:  boolean;
     products: TProduct[];
     messages: unknown[];
+    pagination:TPagination
 }
 
 export type TGetProductByIdResponse=Omit<TGetProductsResponse,"message">
