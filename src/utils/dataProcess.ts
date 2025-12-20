@@ -1,3 +1,4 @@
+import type { TProductContentFormat } from "@/types/customer/product"
 export function pickRandomItemsByCategory<T extends { category: string }>(
   data: T[],
   count: number
@@ -17,3 +18,19 @@ export function pickRandomItemsByCategory<T extends { category: string }>(
     })
 }
 
+
+export function formatContent(content:string):TProductContentFormat{
+  const data= content.split(';').reduce((acc,item)=>{
+    const [key,value]=item.split('：')
+    switch(key){
+      case '加護能力':
+        acc.ability=value
+      case '稀有度':
+        acc.rarity=Number(value)
+      case '建議場合':
+        acc.recommend=value
+    }
+    return acc
+  },{ability:'',rarity:0,recommend:''})
+  return data
+}

@@ -1,31 +1,39 @@
-import type { TPagination } from "../product";
+import type { TPagination } from '../product'
 
 export type TProduct = {
-    id:           string;
-    category:     string;
-    content:      string;
-    description:  string;
-    imageUrl:     string;
-    imagesUrl:    string[];
-    is_enabled:   number;
-    num:          number;
-    origin_price: number;
-    price:        number;
-    title:        string;
-    unit:         string;
+  id: string
+  category: string
+  content: string
+  description: string
+  imageUrl: string
+  imagesUrl: string[]
+  is_enabled: number
+  num: number
+  origin_price: number
+  price: number
+  title: string
+  unit: string
 }
 
-export type TGetProductsAllResponse={
-  success:  boolean;
-    products: TProduct[];
-    messages: unknown[];
+export type TProductContentFormat={
+  ability:string;
+  rarity:number;
+  recommend:string;
 }
 
-export type TGetProductsResponse={
-  success:  boolean;
-    products: TProduct[];
-    messages: unknown[];
-    pagination:TPagination
+type TResponse={
+  success:boolean,
+  message:unknown[]
 }
 
-export type TGetProductByIdResponse=Omit<TGetProductsResponse,"message">
+export type TGetProductsAllResponse = TResponse & {
+  products: TProduct[]
+}
+
+export type TGetProductsResponse = TGetProductsAllResponse & {
+  pagination: TPagination
+}
+
+export type TGetProductByIdResponse = Omit<TResponse, 'message'> & {
+  product: TProduct
+}
