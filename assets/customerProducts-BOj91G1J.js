@@ -1,1 +1,0 @@
-import{j as a}from"./index-CKPGLPkT.js";const c={VITE_API_PATH:"yameow2025",VITE_BASE_URL:"https://ec-course-api.hexschool.io/"},{VITE_BASE_URL:r,VITE_API_PATH:e}=c,o=a.create({baseURL:r}),i=()=>o.get(`/v2/api/${e}/products/all`),p=t=>o.get(`/v2/api/${e}/products`,{params:t});function n(t){return[...new Set(t.map(s=>s.category))]}export{n as a,p as b,i as g};
