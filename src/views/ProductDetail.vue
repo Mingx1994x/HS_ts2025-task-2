@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getProductById, getProductsAll } from '@/api/customerProducts'
 import { formatContent, pickRandomItemsByCategory } from '@/utils/dataProcess'
@@ -51,7 +51,6 @@ const getOtherProducts = async () => {
     const { products: allProducts } = res.data
     const restProduct = allProducts.filter((item) => item.id !== product.value.id)
     otherProducts.value = pickRandomItemsByCategory(restProduct, 4)
-    console.log(otherProducts.value)
   } catch (error) {
     console.error(error)
     alert('取得其他商品資料錯誤')
@@ -84,10 +83,16 @@ const handleQuantity = (mode: handleInput) => {
   }
 }
 
-onMounted(async () => {
-  await getProduct()
-  getOtherProducts()
-})
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (newId) {
+      await getProduct()
+      getOtherProducts()
+    }
+  },
+  { immediate: true },
+)
 </script>
 <template>
   <div class="container pb-5">
