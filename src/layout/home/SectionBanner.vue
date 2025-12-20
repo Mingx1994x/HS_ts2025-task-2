@@ -19,7 +19,7 @@
 <style scoped lang="scss">
   .banner{
     &-image {
-      height: 100vh;
+      height: calc(100vh - 80px);
       /* 確保主視覺區在行動裝置有足夠高度 */
       background-size: cover;
       background-position: center;

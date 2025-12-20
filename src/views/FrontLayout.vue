@@ -5,6 +5,13 @@ import Footer from '@/components/LayoutFooter.vue';
 </script>
 <template>
   <Navbar />
-  <RouterView />
+  <div class="mt-nav">
+    <RouterView />
+  </div>
   <Footer />
 </template>
+<style lang="scss">
+  .mt-nav{
+    margin-top: 80px;
+  }
+</style>
