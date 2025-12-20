@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getProductById } from '@/api/customerProducts'
-import { formatContent } from '@/utils/dataProcess'
+import { getProductById, getProductsAll } from '@/api/customerProducts'
+import { formatContent, pickRandomItemsByCategory } from '@/utils/dataProcess'
 import type { TProduct, TProductContentFormat } from '@/types/customer/product'
 
 const route = useRoute()
@@ -26,6 +26,9 @@ const product = ref<TProduct>({
   title: '',
   unit: '',
 })
+
+const otherProducts = ref<TProduct[]>([])
+
 const getProduct = async () => {
   const { id } = route.params
   try {
@@ -33,10 +36,22 @@ const getProduct = async () => {
     product.value = res.data.product
     const { content } = res.data.product
     contentData.value = formatContent(content)
-    console.log(contentData.value)
   } catch (error) {
     console.error(error)
     alert('取得商品資料錯誤')
+  }
+}
+
+const getOtherProducts = async () => {
+  try {
+    const res = await getProductsAll()
+    const { products: allProducts } = res.data
+    const restProduct = allProducts.filter((item) => item.id !== product.value.id)
+    otherProducts.value = pickRandomItemsByCategory(restProduct, 4)
+    console.log(otherProducts.value)
+  } catch (error) {
+    console.error(error)
+    alert('取得其他商品資料錯誤')
   }
 }
 
@@ -66,8 +81,9 @@ const handleQuantity = (mode: handleInput) => {
   }
 }
 
-onMounted(() => {
-  getProduct()
+onMounted(async () => {
+  await getProduct()
+  getOtherProducts()
 })
 </script>
 <template>
@@ -166,6 +182,82 @@ onMounted(() => {
         </p>
       </div>
     </div>
+
+    <h3 class="related-title text-uppercase mt-5">猜你想再多看看...</h3>
+    <ul class="row row-cols-2 row-cols-md-4 g-4 mt-2 list-unstyled">
+      <li class="col" v-for="otherProduct in otherProducts" :key="otherProduct.id">
+        <div class="card product-item-card border-0 h-100">
+          <img
+            :src="otherProduct.imageUrl"
+            class="card-img-top object-fit-cover"
+            :alt="otherProduct.title"
+            style="height: 200px"
+          />
+          <div class="card-body p-3">
+            <h4 class="fs-6 mb-1">{{ otherProduct.title }}</h4>
+            <p class="text-primary fw-bold mb-0">
+              {{ `NT$ ${otherProduct.price.toLocaleString()}` }}
+            </p>
+          </div>
+        </div>
+      </li>
+      <!-- <div class="col">
+        <div class="card product-item-card border-0 h-100">
+          <img
+            src="https://images.unsplash.com/photo-1635767798638-3e25273a8236?auto=format&fit=crop&q=80&w=400"
+            class="card-img-top object-fit-cover"
+            alt="推薦-黑曜石咒語"
+            style="height: 200px"
+          />
+          <div class="card-body p-3">
+            <h4 class="fs-6 mb-1">黑曜石咒語</h4>
+            <p class="text-primary fw-bold mb-0">NT$ 5,800</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card product-item-card border-0 h-100">
+          <img
+            src="https://images.unsplash.com/photo-1539533113208-f6df8145e543?auto=format&fit=crop&q=80&w=400"
+            class="card-img-top object-fit-cover"
+            alt="推薦-深夜天鵝絨"
+            style="height: 200px"
+          />
+          <div class="card-body p-3">
+            <h4 class="fs-6 mb-1">深夜天鵝絨</h4>
+            <p class="text-primary fw-bold mb-0">NT$ 12,000</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card product-item-card border-0 h-100">
+          <img
+            src="https://images.unsplash.com/photo-1594951475510-9114755e378c?auto=format&fit=crop&q=80&w=400"
+            class="card-img-top object-fit-cover"
+            alt="推薦-銀色項鍊"
+            style="height: 200px"
+          />
+          <div class="card-body p-3">
+            <h4 class="fs-6 mb-1">銀色項鍊</h4>
+            <p class="text-primary fw-bold mb-0">NT$ 3,200</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card product-item-card border-0 h-100">
+          <img
+            src="https://images.unsplash.com/photo-1536502225820-914c14624b5e?auto=format&fit=crop&q=80&w=400"
+            class="card-img-top object-fit-cover"
+            alt="推薦-哥德燭台"
+            style="height: 200px"
+          />
+          <div class="card-body p-3">
+            <h4 class="fs-6 mb-1">哥德燭台</h4>
+            <p class="text-primary fw-bold mb-0">NT$ 9,900</p>
+          </div>
+        </div>
+      </div> -->
+    </ul>
   </div>
 </template>
 <style scoped lang="scss">
