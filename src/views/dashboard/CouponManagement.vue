@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, useTemplateRef } from 'vue'
 import { apiDeleteCoupon, apiGetCoupons } from '@/api/coupon'
-import CouponModal from '@/components/CouponModal.vue'
+import CouponModal from '@/components/dashboard/CouponModal.vue'
 import DeleteModal from '@/components/dashboard/DeleteModal.vue'
 import LayoutPagination from '@/components/LayoutPagination.vue'
 import type { TCouponDetail } from '@/types/coupon'
