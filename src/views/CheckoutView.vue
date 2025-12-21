@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useCartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -6,6 +8,9 @@ const router = useRouter()
 function handleNavigate() {
   router.push('/cart')
 }
+
+const cartStore = useCartStore()
+const { cartItems, totalPrice } = storeToRefs(cartStore)
 </script>
 <template>
   <section class="checkout-section">
@@ -66,16 +71,43 @@ function handleNavigate() {
 
         <div class="col-lg-5">
           <div class="order-summary-card p-4">
-            <h4 class="fw-bold mb-4 text-uppercase text-center" style="letter-spacing: 3px">
-              整備內容
-            </h4>
-
-            <p
-              class="text-center mt-3 mb-0"
-              style="font-size: 0.7rem; color: rgba(255, 255, 255, 0.3)"
-            >
-              * 簽署後即代表同意進入 Final Masquerade 宇宙法則
-            </p>
+            <table class="border-bottom border-secondary mb-4 p-0 w-100">
+              <template v-for="item in cartItems" :key="item.product.id">
+                <tr>
+                  <th scope="row" class="border-0 px-3 py-4">
+                    <div class="d-flex align-items-center">
+                      <img
+                        :src="item.product.imageUrl"
+                        :alt="item.product.title"
+                        class="cart-item-img"
+                        style="width: 80px; height: 80px; object-fit: cover"
+                      />
+                      <div class="ms-3">
+                        <p class="mb-0 fw-bold">{{ item.product.title }}</p>
+                        <small class="text-neutral">{{ `X${item.qty}` }}</small>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="border-0 text-end">
+                    <p class="mb-0">
+                      {{ `NT$ ${item.product.price.toLocaleString()}` }}
+                    </p>
+                  </td>
+                </tr>
+              </template>
+            </table>
+            <div class="d-flex justify-content-between mb-3">
+              <span class="text-neutral">小計</span>
+              <span class="text-light">{{ `NT$ ${totalPrice.toLocaleString()}` }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-4 border-bottom border-secondary pb-3">
+              <span class="text-neutral">支付手段</span>
+              <span class="text-light">ApplePay</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="mb-0 h4 fw-bold">總計</p>
+              <p class="mb-0 h4 fw-bold">{{ `NT$ ${totalPrice.toLocaleString()}` }}</p>
+            </div>
           </div>
         </div>
       </div>
