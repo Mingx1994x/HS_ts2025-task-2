@@ -51,5 +51,15 @@ export const useCartStore = defineStore('Cart Store', () => {
     cartItems.value.splice(removeIndex, 1)
   }
 
-  return { cartItems, cartLength, totalPrice, addCart, removeCart }
+  const updateCart = (id: string, qty: number) => {
+    const existItem = cartItems.value.find((item) => item.product.id === id)
+
+    if (existItem) {
+      existItem.qty = qty
+    } else {
+      alert('裝備 ID 錯誤，請稍候再試')
+    }
+  }
+
+  return { cartItems, cartLength, totalPrice, addCart, removeCart, updateCart }
 })

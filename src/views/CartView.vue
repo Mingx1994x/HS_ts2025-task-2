@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
+import { ref } from 'vue'
+import ProductQuantityInput from '@/components/ProductQuantityInput.vue'
 
 const cartStore = useCartStore()
 const { cartItems, totalPrice } = storeToRefs(cartStore)
-const { removeCart } = cartStore
+const { removeCart, updateCart } = cartStore
 
 function handleRemoveCarts(id: string) {
   if (confirm('確定要刪除此項裝備清單嗎?')) {
@@ -14,13 +15,11 @@ function handleRemoveCarts(id: string) {
   }
 }
 
-watch(
-  () => cartItems.value,
-  (newItem) => {
-    console.log(newItem)
-  },
-  { immediate: true },
-)
+const purchaseQty = ref<number>(1)
+const getQuantity = (qty: number, productId?: string) => {
+  purchaseQty.value = qty
+  updateCart(productId as string, purchaseQty.value)
+}
 </script>
 <template>
   <section class="cart-section">
@@ -53,7 +52,7 @@ watch(
                 <thead>
                   <tr>
                     <th scope="col" class="border-0 ps-0">稀有裝備名稱</th>
-                    <th scope="col" class="border-0">數量</th>
+                    <th scope="col" class="border-0 text-center">數量</th>
                     <th scope="col" class="border-0 text-end">交易代價</th>
                     <th scope="col" class="border-0"></th>
                   </tr>
@@ -74,21 +73,13 @@ watch(
                         </div>
                       </div>
                     </th>
-                    <td class="border-0" style="width: 150px">
-                      <div class="input-group quantity-input-group">
-                        <button class="btn btn-sm btn-outline-primary" type="button">
-                          <i class="fas fa-minus"></i>
-                        </button>
-                        <input
-                          type="text"
-                          class="form-control form-control-sm text-center bg-transparent text-light border-primary"
-                          :value="item.qty"
-                          readonly
-                        />
-                        <button class="btn btn-sm btn-outline-primary" type="button">
-                          <i class="fas fa-plus"></i>
-                        </button>
-                      </div>
+                    <td class="border-0" style="width: 200px">
+                      <ProductQuantityInput
+                        :product-nums="item.product.num"
+                        :product-id="item.product.id"
+                        :input-quantity="item.qty"
+                        @emit-quantity="getQuantity"
+                      />
                     </td>
                     <td class="border-0 text-end">
                       <p class="mb-0 text-primary fw-bold">

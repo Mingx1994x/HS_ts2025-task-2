@@ -6,11 +6,12 @@ import { getProductById, getProductsAll } from '@/api/customerProducts'
 import { formatContent, pickRandomItemsByCategory } from '@/utils/dataProcess'
 
 import ProductCard from '@/components/ProductCard.vue'
+import ProductQuantityInput from '@/components/ProductQuantityInput.vue'
 
 import type { TProduct, TProductContentFormat } from '@/types/customer/product'
 
 const route = useRoute()
-const purchaseQty = ref<number>(1)
+// const purchaseQty = ref<number>(1)
 const contentData = ref<TProductContentFormat>({
   ability: '',
   rarity: 0,
@@ -75,14 +76,14 @@ const renderContentData = (key: TProductContentFormatKey): string => {
   return contentData.value[key]
 }
 
-type handleInput = 'plus' | 'minus'
-const handleQuantity = (mode: handleInput) => {
-  if (mode === 'plus') {
-    purchaseQty.value += 1
-  } else {
-    purchaseQty.value -= 1
-  }
-}
+// type handleInput = 'plus' | 'minus'
+// const handleQuantity = (mode: handleInput) => {
+//   if (mode === 'plus') {
+//     purchaseQty.value += 1
+//   } else {
+//     purchaseQty.value -= 1
+//   }
+// }
 
 watch(
   () => route.params.id,
@@ -99,6 +100,11 @@ watch(
 const cartStore = useCartStore()
 // const {cartItems}=storeToRefs(cartStore)
 const { addCart } = cartStore
+
+const purchaseQty = ref<number>(1)
+function getQuantity(qty: number) {
+  purchaseQty.value = qty
+}
 
 function handleAddToCart() {
   try {
@@ -161,7 +167,8 @@ function handleAddToCart() {
           <div class="buy-action-box">
             <div class="row g-2 align-items-center">
               <div class="col-6">
-                <div class="input-group quantity-input-group">
+                <ProductQuantityInput :product-nums="product.num" @emit-quantity="getQuantity" />
+                <!-- <div class="input-group quantity-input-group">
                   <button
                     class="btn btn-outline-primary border-end-0"
                     type="button"
@@ -185,7 +192,7 @@ function handleAddToCart() {
                   >
                     <i class="fas fa-plus"></i>
                   </button>
-                </div>
+                </div> -->
               </div>
               <div class="col-6">
                 <button
@@ -267,21 +274,21 @@ function handleAddToCart() {
 }
 
 /* 數量選擇器自定義樣式 */
-.quantity-input-group .form-control {
-  background-color: #211238;
-  border-color: rgba(255, 183, 3, 0.3);
-  color: var(--bs-primary);
-}
+// .quantity-input-group .form-control {
+//   background-color: #211238;
+//   border-color: rgba(255, 183, 3, 0.3);
+//   color: var(--bs-primary);
+// }
 
-.quantity-input-group .btn {
-  border-color: rgba(255, 183, 3, 0.3);
-  color: var(--bs-primary);
-}
+// .quantity-input-group .btn {
+//   border-color: rgba(255, 183, 3, 0.3);
+//   color: var(--bs-primary);
+// }
 
-.quantity-input-group .btn:hover {
-  background-color: var(--bs-primary);
-  color: var(--bs-dark);
-}
+// .quantity-input-group .btn:hover {
+//   background-color: var(--bs-primary);
+//   color: var(--bs-dark);
+// }
 
 /* 推薦商品標題 */
 .related-title {
