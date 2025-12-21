@@ -31,8 +31,30 @@ const router = createRouter({
         },
         {
           path: 'checkout',
-          name: 'checkout',
+          name: 'checkoutView',
           component: () => import('@/views/CheckoutView.vue'),
+          children: [
+            {
+              path: '',
+              name: 'checkoutForm',
+              component: () => import('@/layout/checkout/CheckoutForm.vue'),
+              meta: {
+                title: '輸入交易資訊',
+                nextButtonText: '結帳',
+                nextPage: '/checkout/payment',
+              },
+            },
+            {
+              path: 'payment',
+              name: 'checkoutPayment',
+              component: () => import('@/layout/checkout/CheckoutPayment.vue'),
+              meta: {
+                title: '選擇付款方式',
+                nextButtonText: '付款',
+                nextPage: '/',
+              },
+            },
+          ],
         },
       ],
     },

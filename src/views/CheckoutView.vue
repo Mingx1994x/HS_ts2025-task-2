@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
+const title = computed(() => route.meta.title as string)
+const nextButtonText = computed(() => route.meta.nextButtonText as string)
+const nextPage = computed(() => route.meta.nextPage as string)
 const router = useRouter()
-
-function handleNavigate() {
-  router.push('/cart')
+function handleNavigate(path?: string) {
+  if (!path) {
+    // 返回
+    router.back()
+    return
+  }
+  router.push(path)
 }
 
 const cartStore = useCartStore()
@@ -16,7 +25,10 @@ const { cartItems, totalPrice } = storeToRefs(cartStore)
   <section class="checkout-section">
     <div class="container pb-5">
       <div class="d-flex align-items-center py-4">
-        <h3 class="text-uppercase mb-0">輸入交易資訊</h3>
+        <h3 class="text-uppercase mb-0">{{ title }}</h3>
+        <!-- <h3 class="text-uppercase mb-0" v-show="stepConfig[step].name === 'payment'">
+          選擇付款方式
+        </h3> -->
         <div
           class="ms-3 flex-grow-1"
           style="height: 1px; background: linear-gradient(90deg, var(--bs-primary), transparent)"
@@ -25,46 +37,19 @@ const { cartItems, totalPrice } = storeToRefs(cartStore)
 
       <div class="row g-5">
         <div class="col-lg-7">
-          <form>
-            <div class="mb-2">
-              <label for="ContactMail" class="text-neutral mb-0">電子信箱</label>
-              <input
-                type="email"
-                class="form-control"
-                id="ContactMail"
-                aria-describedby="emailHelp"
-                placeholder="example@gmail.com"
-              />
-            </div>
-            <div class="mb-2">
-              <label for="ContactName" class="text-neutral mb-0">姓名</label>
-              <input type="text" class="form-control" id="ContactName" placeholder="王漂亮" />
-            </div>
-            <div class="mb-2">
-              <label for="ContactPhone" class="text-neutral mb-0">手機</label>
-              <input type="text" class="form-control" id="ContactPhone" placeholder="0912345678" />
-            </div>
-            <div class="mb-2">
-              <label for="ContactMessage" class="text-neutral mb-0">留言</label>
-              <textarea
-                class="form-control"
-                rows="3"
-                id="ContactMessage"
-                placeholder="六角學院，只要你不放棄，我們就不放棄你 ... "
-              ></textarea>
-            </div>
-          </form>
+          <RouterView />
           <div
             class="d-flex flex-column-reverse flex-md-row mt-4 justify-content-between align-items-md-center align-items-end w-100"
           >
-            <a role="button" class="link-info mt-md-0 mt-3" @click="handleNavigate"
+            <a type="button" class="link-info mt-md-0 mt-3" @click="handleNavigate('')"
               ><i class="fas fa-chevron-left me-2"></i>返回</a
             >
             <button
               type="button"
               class="btn btn-primary px-5 py-3 text-uppercase fw-bold shadow-lg"
+              @click="handleNavigate(nextPage)"
             >
-              結帳
+              {{ nextButtonText }}
             </button>
           </div>
         </div>
