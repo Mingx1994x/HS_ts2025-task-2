@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { getProductsAll } from '@/api/customerProducts'
 import { pickRandomItemsByCategory } from '@/utils/dataProcess'
 
-import ProductCard from '@/components/ProductCard.vue'
+import ProductCard from '@/components/front/ProductCard.vue'
 
 import type { TProduct } from '@/types/customer/product'
 

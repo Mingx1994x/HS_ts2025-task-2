@@ -1,5 +1,5 @@
-import Dashboard from '@/views/DashboardView.vue'
-import FrontLayout from '@/views/FrontLayout.vue'
+import Dashboard from '@/views/dashboard/DashboardView.vue'
+import FrontLayout from '@/views/front/FrontLayout.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const router = createRouter({
@@ -12,27 +12,27 @@ const router = createRouter({
         {
           path: '',
           name: 'homePage',
-          component: () => import('@/views/HomeView.vue'),
+          component: () => import('@/views/front/HomeView.vue'),
         },
         {
           path: 'products',
           name: 'productList',
-          component: () => import('@/views/ProductList.vue'),
+          component: () => import('@/views/front/ProductList.vue'),
         },
         {
           path: 'product-detail/:id',
           name: 'productDetail',
-          component: () => import('@/views/ProductDetail.vue'),
+          component: () => import('@/views/front/ProductDetail.vue'),
         },
         {
           path: 'cart',
           name: 'cart',
-          component: () => import('@/views/CartView.vue'),
+          component: () => import('@/views/front/CartView.vue'),
         },
         {
           path: 'checkout',
           name: 'checkoutView',
-          component: () => import('@/views/CheckoutView.vue'),
+          component: () => import('@/views/front/CheckoutView.vue'),
           children: [
             {
               path: '',
@@ -61,12 +61,12 @@ const router = createRouter({
     {
       path: '/payment-success',
       name: 'payment-success',
-      component: () => import('@/views/PaymentSuccess.vue'),
+      component: () => import('@/views/front/PaymentSuccess.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/views/LoginView.vue'),
+      component: () => import('@/views/front/LoginView.vue'),
     },
     {
       path: '/dashboard',
@@ -77,17 +77,17 @@ const router = createRouter({
         {
           path: '/product-management',
           name: 'product-management',
-          component: () => import('@/views/ProductManagement.vue'),
+          component: () => import('@/views/dashboard/ProductManagement.vue'),
         },
         {
           path: '/order-management',
           name: 'order-management',
-          component: () => import('@/views/OrderManagement.vue'),
+          component: () => import('@/views/dashboard/OrderManagement.vue'),
         },
         {
           path: '/coupon-management',
           name: 'coupon-management',
-          component: () => import('@/views/CouponManagement.vue'),
+          component: () => import('@/views/dashboard/CouponManagement.vue'),
         },
       ],
     },

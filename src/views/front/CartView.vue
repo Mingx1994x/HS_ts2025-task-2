@@ -2,7 +2,7 @@
 import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
-import ProductQuantityInput from '@/components/ProductQuantityInput.vue'
+import ProductQuantityInput from '@/components/front/ProductQuantityInput.vue'
 import { useRouter } from 'vue-router'
 
 const cartStore = useCartStore()

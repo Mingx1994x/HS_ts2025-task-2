@@ -17,8 +17,8 @@ TypeScript 練習題目 - 商品管理頁面
 // 提示：從 @/api/products 匯入 apiDeleteProduct, apiGetProducts
 import { apiDeleteProduct, apiGetProducts } from '@/api/products'
 
-import DeleteModal from '@/components/DeleteModal.vue'
-import ProductModal from '@/components/ProductModal.vue'
+import DeleteModal from '@/components/dashboard/DeleteModal.vue'
+import ProductModal from '@/components/dashboard/ProductModal.vue'
 import LayoutPagination from '@/components/LayoutPagination.vue'
 // TODO: 匯入型別定義
 // 提示：從 @/types/product 匯入 Pagination, ProductData
@@ -48,9 +48,9 @@ const pagination = ref<TPagination>({
   category: '',
 })
 
-const isLoading=ref<boolean>(false)
+const isLoading = ref<boolean>(false)
 const getProducts = async () => {
-  isLoading.value=true
+  isLoading.value = true
   try {
     const res = await apiGetProducts({
       page: currentPage.value,
@@ -60,14 +60,14 @@ const getProducts = async () => {
     pagination.value = res.data.pagination
   } catch (error) {
     alert('取得產品列表失敗')
-  }finally{
-    isLoading.value=false
+  } finally {
+    isLoading.value = false
   }
 }
 
 // 頁面切換
-const handlePagination=(page:string)=>{
-  currentPage.value=page
+const handlePagination = (page: string) => {
+  currentPage.value = page
   getProducts()
 }
 
@@ -77,7 +77,7 @@ onMounted(() => {
 
 // TODO: 為 getInitialProductData 函式加上型別註解
 // 提示：這個函式不接受參數，回傳 ProductData 型別
-const getInitialProductData = ():TProductData => ({
+const getInitialProductData = (): TProductData => ({
   id: '',
   title: '',
   origin_price: 0,
@@ -98,11 +98,11 @@ const tempProduct = ref<TProductData>(getInitialProductData())
 
 // TODO: 為 openModal 函式加上型別註解
 // 提示：參數 product 的型別是 ProductData | null，預設值是 null，沒有回傳值
-const openModal = (product:TProductData|null = null) => {
+const openModal = (product: TProductData | null = null) => {
   if (product) {
     tempProduct.value = { ...product, imagesUrl: product.imagesUrl ? [...product.imagesUrl] : [''] }
-  }else{
-    tempProduct.value=getInitialProductData()
+  } else {
+    tempProduct.value = getInitialProductData()
   }
 
   productModalRef.value?.openModal()
@@ -110,13 +110,13 @@ const openModal = (product:TProductData|null = null) => {
 
 // TODO: 為 openDeleteModal 函式加上型別註解
 // 提示：參數 productId 是 string 型別，沒有回傳值
-const openDeleteModal = (productId:string) => {
+const openDeleteModal = (productId: string) => {
   deleteModalRef.value?.openModal(() => handleDeleteProduct(productId))
 }
 
 // TODO: 為 handleDeleteProduct 函式加上型別註解
 // 提示：這是一個 async 函式，參數 productId 是 string 型別，回傳 Promise<void>
-const handleDeleteProduct = async (productId:string):Promise<void> => {
+const handleDeleteProduct = async (productId: string): Promise<void> => {
   try {
     await apiDeleteProduct(productId)
     alert('刪除商品成功')
@@ -197,10 +197,7 @@ const handleDeleteProduct = async (productId:string):Promise<void> => {
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <LayoutPagination
-        :pagination="pagination"
-        @handle-pagination="handlePagination"
-       />
+      <LayoutPagination :pagination="pagination" @handle-pagination="handlePagination" />
     </div>
   </div>
 

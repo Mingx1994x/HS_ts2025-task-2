@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { getProducts, getProductsCategories } from '@/api/customerProducts'
 
 import LayoutPagination from '@/components/LayoutPagination.vue'
-import ProductCard from '@/components/ProductCard.vue'
+import ProductCard from '@/components/front/ProductCard.vue'
 
 import type { TProduct } from '@/types/customer/product'
 import type { TPagination } from '@/types/product'

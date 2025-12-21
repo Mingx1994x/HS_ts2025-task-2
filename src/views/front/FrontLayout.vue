@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import Navbar from '@/components/LayoutNavbar.vue';
-import Footer from '@/components/LayoutFooter.vue';
-
+import Navbar from '@/components/front/LayoutNavbar.vue'
+import Footer from '@/components/front/LayoutFooter.vue'
 </script>
 <template>
   <Navbar />
@@ -11,7 +10,7 @@ import Footer from '@/components/LayoutFooter.vue';
   <Footer />
 </template>
 <style lang="scss">
-  .mt-nav{
-    margin-top: 80px;
-  }
+.mt-nav {
+  margin-top: 80px;
+}
 </style>

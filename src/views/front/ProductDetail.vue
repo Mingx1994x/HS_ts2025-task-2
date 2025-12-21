@@ -5,8 +5,8 @@ import { useCartStore } from '@/stores/cart'
 import { getProductById, getProductsAll } from '@/api/customerProducts'
 import { formatContent, pickRandomItemsByCategory } from '@/utils/dataProcess'
 
-import ProductCard from '@/components/ProductCard.vue'
-import ProductQuantityInput from '@/components/ProductQuantityInput.vue'
+import ProductCard from '@/components/front/ProductCard.vue'
+import ProductQuantityInput from '@/components/front/ProductQuantityInput.vue'
 
 import type { TProduct, TProductContentFormat } from '@/types/customer/product'
 

@@ -2,7 +2,7 @@
 import { onMounted, ref, useTemplateRef } from 'vue'
 import { apiDeleteCoupon, apiGetCoupons } from '@/api/coupon'
 import CouponModal from '@/components/CouponModal.vue'
-import DeleteModal from '@/components/DeleteModal.vue'
+import DeleteModal from '@/components/dashboard/DeleteModal.vue'
 import LayoutPagination from '@/components/LayoutPagination.vue'
 import type { TCouponDetail } from '@/types/coupon'
 import type { TPagination } from '@/types/product'

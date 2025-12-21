@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { apiDeleteOrder, apiGetOrders } from '@/api/order'
-import DeleteModal from '@/components/DeleteModal.vue'
-import OrderDetailModal from '@/components/OrderDetailModal.vue'
+import DeleteModal from '@/components/dashboard/DeleteModal.vue'
+import OrderDetailModal from '@/components/dashboard/OrderDetailModal.vue'
 import type { Order, Pagination } from '@/types/order'
 import { onMounted, ref, useTemplateRef } from 'vue'
 
