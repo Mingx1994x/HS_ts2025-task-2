@@ -56,7 +56,7 @@ const navigateHomePage = () => {
               </div>
               <form @submit.prevent="handleLogin">
                 <div class="mb-3">
-                  <label for="emailInput" class="form-label text-gray-600">電子信箱</label>
+                  <label for="emailInput" class="form-label text-black">電子信箱</label>
                   <input
                     v-model="form.username"
                     type="email"
@@ -67,7 +67,7 @@ const navigateHomePage = () => {
                   />
                 </div>
                 <div class="mb-4">
-                  <label for="passwordInput" class="form-label text-gray-600">密碼</label>
+                  <label for="passwordInput" class="form-label text-black">密碼</label>
                   <input
                     v-model="form.password"
                     type="password"
