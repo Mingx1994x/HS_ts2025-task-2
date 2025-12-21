@@ -97,7 +97,7 @@ watch(
 <template>
   <div class="container pb-5">
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb bg-transparent px-0 py-3">
+      <ol class="breadcrumb bg-transparent px-0 py-4">
         <li class="breadcrumb-item"><RouterLink to="/">首頁</RouterLink></li>
         <li class="breadcrumb-item"><RouterLink to="/products">珍品裝備庫</RouterLink></li>
         <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>

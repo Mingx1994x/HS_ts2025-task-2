@@ -7,24 +7,29 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component:FrontLayout,
-      children:[
+      component: FrontLayout,
+      children: [
         {
-          path:'',
+          path: '',
           name: 'homePage',
           component: () => import('@/views/HomeView.vue'),
         },
         {
-          path:'products',
+          path: 'products',
           name: 'productList',
           component: () => import('@/views/ProductList.vue'),
         },
         {
-          path:'product-detail/:id',
+          path: 'product-detail/:id',
           name: 'productDetail',
           component: () => import('@/views/ProductDetail.vue'),
         },
-      ]
+        {
+          path: 'cart',
+          name: 'cart',
+          component: () => import('@/views/CartView.vue'),
+        },
+      ],
     },
     {
       path: '/login',
