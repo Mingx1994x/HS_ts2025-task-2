@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
-import { Modal } from 'bootstrap';
+import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue'
+import { Modal } from 'bootstrap'
 
-import { apiCreateCoupon, apiEditCoupon } from '@/api/coupon';
+import { apiCreateCoupon, apiEditCoupon } from '@/api/coupon'
 
-import type {TCouponData, TCouponDetail} from '../types/coupon'
+import type { TCouponData, TCouponDetail } from '../types/coupon'
 
 interface CouponModalProps {
-  coupon:TCouponDetail
-  functionMode:TFunctionMode
+  coupon: TCouponDetail
+  functionMode: TFunctionMode
 }
 const props = defineProps<CouponModalProps>()
 
-const tempCoupon=ref(props.coupon)
+const tempCoupon = ref(props.coupon)
 const dueDate = computed({
   get(): string {
     if (!tempCoupon.value.due_date) return ''
-    
+
     const date = new Date(tempCoupon.value.due_date)
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
-    
+
     return `${year}-${month}-${day}`
   },
   set(value: string) {
@@ -29,7 +29,7 @@ const dueDate = computed({
       tempCoupon.value.due_date = Date.now()
       return
     }
-    
+
     // 使用本地時區建立日期
     const [year, month, day] = value.split('-').map(Number)
     const date = new Date(year, month - 1, day, 0, 0, 0, 0)
@@ -37,35 +37,31 @@ const dueDate = computed({
   },
 })
 
-watch(
-  [() => props.coupon, () => props.functionMode],
-  ([newCoupon]) => {
-    tempCoupon.value = { ...newCoupon }
-  }
-)
+watch([() => props.coupon, () => props.functionMode], ([newCoupon]) => {
+  tempCoupon.value = { ...newCoupon }
+})
 
 const emit = defineEmits(['get-coupons'])
 
-let modal:Modal | null=null
-const modalRef=useTemplateRef('modalRef')
+let modal: Modal | null = null
+const modalRef = useTemplateRef('modalRef')
 
-const openModal=()=>{
-  if(modal){
+const openModal = () => {
+  if (modal) {
     modal.show()
   }
 }
 
-const closeModal=()=>{
-  if(modal){
+const closeModal = () => {
+  if (modal) {
     modal.hide()
   }
 }
 
-onMounted(()=>{
-  if(modalRef.value){
-    modal=new Modal(modalRef.value)
+onMounted(() => {
+  if (modalRef.value) {
+    modal = new Modal(modalRef.value)
   }
-
 })
 
 onUnmounted(() => {
@@ -80,42 +76,38 @@ defineExpose({
 })
 
 // 新增優惠券
-const createCoupon=async(CouponData:TCouponData)=>{
+const createCoupon = async (CouponData: TCouponData) => {
   try {
-    const res=await apiCreateCoupon(CouponData)
-    console.log("新增優惠券成功",res);
+    const res = await apiCreateCoupon(CouponData)
   } catch (error) {
-    console.error(error);
     alert('新增優惠券失敗，請稍後再試')
   }
 }
 
 // 編輯優惠券
-const editCoupon=async()=>{
+const editCoupon = async () => {
   try {
-    const {id,title,is_enabled,percent,due_date,code}=tempCoupon.value
-    const res=await apiEditCoupon({
+    const { id, title, is_enabled, percent, due_date, code } = tempCoupon.value
+    const res = await apiEditCoupon({
       id,
-      data:{
+      data: {
         title,
         is_enabled,
         percent,
         due_date,
-        code
-      }
+        code,
+      },
     })
-    console.log("更新優惠券成功",res);
   } catch (error) {
-    console.error(error);
     alert('更新優惠券失敗，請稍後再試')
   }
 }
 
-type TFunctionMode= "create" | "edit"
-const handleSubmitCoupon=async(mode:TFunctionMode)=>{
-  if(mode==="create"){
+type TFunctionMode = 'create' | 'edit'
+const handleSubmitCoupon = async (mode: TFunctionMode) => {
+  if (mode === 'create') {
     await createCoupon(tempCoupon.value)
-  } else{
+  } else {
     await editCoupon()
   }
   closeModal()
@@ -134,7 +126,9 @@ const handleSubmitCoupon=async(mode:TFunctionMode)=>{
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content rounded-lg">
         <div class="modal-header">
-          <h5 class="modal-title" id="couponModalLabel">{{ props.functionMode === 'create' ? '新增優惠券' : '編輯優惠券' }}</h5>
+          <h5 class="modal-title" id="couponModalLabel">
+            {{ props.functionMode === 'create' ? '新增優惠券' : '編輯優惠券' }}
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -209,7 +203,7 @@ const handleSubmitCoupon=async(mode:TFunctionMode)=>{
             取消
           </button>
           <button
-            v-if="props.functionMode==='create'"
+            v-if="props.functionMode === 'create'"
             type="button"
             class="btn btn-dark rounded-lg"
             @click="handleSubmitCoupon('create')"

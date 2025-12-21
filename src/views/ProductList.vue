@@ -29,7 +29,6 @@ const getProductList = async () => {
     productList.value = res.data.products
     pagination.value = res.data.pagination
   } catch (error) {
-    console.error(error)
     alert('取得商品失敗')
   }
 }

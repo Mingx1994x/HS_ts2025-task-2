@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {  onMounted, ref, useTemplateRef } from 'vue'
+import { onMounted, ref, useTemplateRef } from 'vue'
 import { apiDeleteCoupon, apiGetCoupons } from '@/api/coupon'
 import CouponModal from '@/components/CouponModal.vue'
 import DeleteModal from '@/components/DeleteModal.vue'
@@ -7,7 +7,7 @@ import LayoutPagination from '@/components/LayoutPagination.vue'
 import type { TCouponDetail } from '@/types/coupon'
 import type { TPagination } from '@/types/product'
 
-const coupons=ref<TCouponDetail[]>([])
+const coupons = ref<TCouponDetail[]>([])
 const currentPage = ref<string>('1')
 const pagination = ref<TPagination>({
   total_pages: 0,
@@ -15,82 +15,73 @@ const pagination = ref<TPagination>({
   has_pre: false,
   has_next: false,
   category: '',
-})  
-const isLoading=ref<boolean>(false)
+})
+const isLoading = ref<boolean>(false)
 // 取得優惠券
 const getCoupons = async () => {
-  isLoading.value=true
+  isLoading.value = true
   try {
     const res = await apiGetCoupons({
       page: currentPage.value,
     })
-    console.log("取得優惠券成功",res);
-    coupons.value=res.data.coupons
-    pagination.value=res.data.pagination
+    coupons.value = res.data.coupons
+    pagination.value = res.data.pagination
   } catch (error) {
-    console.error(error)
     alert('取得優惠券失敗，請稍後再試')
-  }finally{
-    isLoading.value=false
+  } finally {
+    isLoading.value = false
   }
 }
 
-const handlePagination=(page:string)=>{
-  currentPage.value=page
+const handlePagination = (page: string) => {
+  currentPage.value = page
   getCoupons()
 }
-
 
 onMounted(() => {
   getCoupons()
 })
 
-const getInitialCoupon=():TCouponDetail=>({
-  id:'',
-  title:'',
-  is_enabled:0,
-  percent:0,
-  due_date:new Date().getTime()+60*60*24*1000,
-  code:'',
-  num:0
+const getInitialCoupon = (): TCouponDetail => ({
+  id: '',
+  title: '',
+  is_enabled: 0,
+  percent: 0,
+  due_date: new Date().getTime() + 60 * 60 * 24 * 1000,
+  code: '',
+  num: 0,
 })
 
-const tempCoupon=ref<TCouponDetail>(getInitialCoupon());
+const tempCoupon = ref<TCouponDetail>(getInitialCoupon())
 
-const couponModal=useTemplateRef<InstanceType<typeof CouponModal>>('couponModalRef')
-const couponDeleteModal=useTemplateRef<InstanceType<typeof DeleteModal>>('couponDeleteModalRef')
+const couponModal = useTemplateRef<InstanceType<typeof CouponModal>>('couponModalRef')
+const couponDeleteModal = useTemplateRef<InstanceType<typeof DeleteModal>>('couponDeleteModalRef')
 
-type TFunctionMode= "create" | "edit"
-const functionMode=ref<TFunctionMode>("create")
-const openCouponModal=(coupon:TCouponDetail|null=null)=>{
-  
-  if(coupon){
-    tempCoupon.value={...coupon}
-    functionMode.value='edit'
-  }else{
-    tempCoupon.value=getInitialCoupon()
-    functionMode.value='create'
+type TFunctionMode = 'create' | 'edit'
+const functionMode = ref<TFunctionMode>('create')
+const openCouponModal = (coupon: TCouponDetail | null = null) => {
+  if (coupon) {
+    tempCoupon.value = { ...coupon }
+    functionMode.value = 'edit'
+  } else {
+    tempCoupon.value = getInitialCoupon()
+    functionMode.value = 'create'
   }
-  
+
   // openModal()
-  console.log("應該要傳入的 coupon 資料",tempCoupon.value);
-  console.log("應該要傳入的 mode",functionMode.value);
   couponModal.value?.openModal()
 }
 
-const openDeleteModal=(id:string)=>{
-  // console.log("欲刪除的優惠券 ID",id);
-  couponDeleteModal.value?.openModal(()=>deleteCoupon(id))
+const openDeleteModal = (id: string) => {
+  couponDeleteModal.value?.openModal(() => deleteCoupon(id))
 }
 
-const deleteCoupon=async(id:string)=>{
+const deleteCoupon = async (id: string) => {
   try {
     await apiDeleteCoupon(id)
-    
   } catch (error) {
-    console.error(error);
     alert('刪除失敗，請稍後再試')
-  } finally{
+  } finally {
     getCoupons()
   }
 }
@@ -102,7 +93,7 @@ const deleteCoupon=async(id:string)=>{
     </button>
   </div>
   <!-- 優惠券 Table -->
-   <div class="card shadow-sm rounded-lg flex-grow-1">
+  <div class="card shadow-sm rounded-lg flex-grow-1">
     <div class="card-body p-4">
       <div class="table-responsive" v-if="!isLoading">
         <table class="table table-hover align-middle">
@@ -120,8 +111,8 @@ const deleteCoupon=async(id:string)=>{
             <tr v-for="coupon in coupons" :key="coupon.id">
               <td>{{ coupon.title }}</td>
               <td>{{ coupon.code }}</td>
-              <td>{{ `${coupon.percent}%`}}</td>
-              <td>{{ new Date(coupon.due_date).toLocaleDateString()}}</td>
+              <td>{{ `${coupon.percent}%` }}</td>
+              <td>{{ new Date(coupon.due_date).toLocaleDateString() }}</td>
               <td class="text-center">
                 <div
                   class="form-check form-switch d-flex justify-content-center align-items-center"
@@ -166,17 +157,14 @@ const deleteCoupon=async(id:string)=>{
         </div>
       </div>
     </div>
-    <LayoutPagination 
-      :pagination="pagination"
-      @handle-pagination="handlePagination"
-    />
+    <LayoutPagination :pagination="pagination" @handle-pagination="handlePagination" />
   </div>
-   <!-- 優惠券 Modal -->
-    <CouponModal 
-      ref="couponModalRef"
-      :coupon="tempCoupon" 
-      :function-mode="functionMode"
-      @get-coupons="getCoupons"
-      />
-    <DeleteModal ref="couponDeleteModalRef" title="刪除優惠券" content="確定要刪除優惠券嗎？"/>
+  <!-- 優惠券 Modal -->
+  <CouponModal
+    ref="couponModalRef"
+    :coupon="tempCoupon"
+    :function-mode="functionMode"
+    @get-coupons="getCoupons"
+  />
+  <DeleteModal ref="couponDeleteModalRef" title="刪除優惠券" content="確定要刪除優惠券嗎？" />
 </template>

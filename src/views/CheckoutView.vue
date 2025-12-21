@@ -26,9 +26,6 @@ const { cartItems, totalPrice } = storeToRefs(cartStore)
     <div class="container pb-5">
       <div class="d-flex align-items-center py-4">
         <h3 class="text-uppercase mb-0">{{ title }}</h3>
-        <!-- <h3 class="text-uppercase mb-0" v-show="stepConfig[step].name === 'payment'">
-          選擇付款方式
-        </h3> -->
         <div
           class="ms-3 flex-grow-1"
           style="height: 1px; background: linear-gradient(90deg, var(--bs-primary), transparent)"
