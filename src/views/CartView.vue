@@ -3,9 +3,10 @@ import { useCartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import ProductQuantityInput from '@/components/ProductQuantityInput.vue'
+import { useRouter } from 'vue-router'
 
 const cartStore = useCartStore()
-const { cartItems, totalPrice } = storeToRefs(cartStore)
+const { cartItems, totalPrice, cartLength } = storeToRefs(cartStore)
 const { removeCart, updateCart } = cartStore
 
 function handleRemoveCarts(id: string) {
@@ -19,6 +20,10 @@ const purchaseQty = ref<number>(1)
 const getQuantity = (qty: number, productId?: string) => {
   purchaseQty.value = qty
   updateCart(productId as string, purchaseQty.value)
+}
+const router = useRouter()
+function handleNavigate() {
+  router.push('/checkout')
 }
 </script>
 <template>
@@ -133,8 +138,10 @@ const getQuantity = (qty: number, productId?: string) => {
             </div>
 
             <button
-              type="button"
+              role="button"
               class="btn btn-primary w-100 py-3 text-uppercase fw-bold shadow-lg"
+              :disabled="cartLength === 0"
+              @click="handleNavigate"
             >
               確認交易契約 <i class="fas fa-scroll ms-2"></i>
             </button>
