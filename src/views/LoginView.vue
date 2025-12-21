@@ -29,6 +29,10 @@ const handleLogin = async () => {
     isProcessLogin.value = false
   }
 }
+
+const navigateHomePage = () => {
+  router.push('/')
+}
 </script>
 
 <template>
@@ -81,7 +85,13 @@ const handleLogin = async () => {
                   >
                     登入
                   </button>
-                  <button type="button" class="btn btn-outline-dark rounded-lg py-2">回首頁</button>
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark rounded-lg py-2"
+                    @click="navigateHomePage"
+                  >
+                    回首頁
+                  </button>
                 </div>
               </form>
             </div>
