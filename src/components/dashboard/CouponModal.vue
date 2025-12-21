@@ -4,8 +4,7 @@ import { Modal } from 'bootstrap'
 
 import { apiCreateCoupon, apiEditCoupon } from '@/api/coupon'
 
-import type { TCouponData, TCouponDetail } from '../types/coupon'
-
+import type { TCouponData, TCouponDetail } from '@/types/coupon'
 interface CouponModalProps {
   coupon: TCouponDetail
   functionMode: TFunctionMode
