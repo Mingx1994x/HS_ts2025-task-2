@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { navbarData } from '@/constants'
+import { useCartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
+
+const cartStore = useCartStore()
+const { cartLength } = storeToRefs(cartStore)
 </script>
 <template>
   <nav class="navbar navbar-expand-lg bg-white fixed-top shadow-sm" style="z-index: 1000">
@@ -26,8 +31,15 @@ import { navbarData } from '@/constants'
             </RouterLink>
           </li>
           <li class="nav-item d-none d-lg-block ms-lg-3">
-            <RouterLink class="nav-link" to="/cart">
+            <RouterLink class="nav-link position-relative" to="/cart">
               <i class="fas fa-shopping-cart"></i>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger"
+                v-show="cartLength"
+              >
+                {{ cartLength }}
+                <span class="visually-hidden">cart items</span></span
+              >
             </RouterLink>
           </li>
         </ul>

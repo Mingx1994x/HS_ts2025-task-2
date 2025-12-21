@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useCartStore } from '@/stores/cart'
 import { getProductById, getProductsAll } from '@/api/customerProducts'
 import { formatContent, pickRandomItemsByCategory } from '@/utils/dataProcess'
 
@@ -93,6 +94,20 @@ watch(
   },
   { immediate: true },
 )
+
+// 購物車 pinia
+const cartStore = useCartStore()
+// const {cartItems}=storeToRefs(cartStore)
+const { addCart } = cartStore
+
+function handleAddToCart() {
+  try {
+    addCart(product.value, purchaseQty.value)
+    alert('加入購物車成功')
+  } catch (error) {
+    alert(error instanceof Error ? error.message : '加入裝備失敗,請稍後再試')
+  }
+}
 </script>
 <template>
   <div class="container pb-5">
@@ -173,7 +188,11 @@ watch(
                 </div>
               </div>
               <div class="col-6">
-                <button type="button" class="btn btn-primary w-100 py-2 text-uppercase fw-bold">
+                <button
+                  type="button"
+                  class="btn btn-primary w-100 py-2 text-uppercase fw-bold"
+                  @click="handleAddToCart"
+                >
                   加入裝備袋
                 </button>
               </div>
