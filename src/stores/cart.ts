@@ -22,9 +22,10 @@ export const useCartStore = defineStore('Cart Store', () => {
     const existItem = cartItems.value.find((item) => item.product.id === product.id)
 
     if (existItem) {
-      if (existItem.product.num === existItem.qty) {
+      const wantedQty = existItem.qty + qty
+      if (wantedQty > existItem.product.num) {
         const error = new Error()
-        error.message = '目前已達裝備可購買數量最大值，請挑選其他裝備'
+        error.message = '已超出裝備可購買數量最大值，請再確認數量或挑選其他裝備'
         throw error
       }
       existItem.qty += qty
