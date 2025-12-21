@@ -51,12 +51,17 @@ const router = createRouter({
               meta: {
                 title: '選擇付款方式',
                 nextButtonText: '付款',
-                nextPage: '/',
+                nextPage: '/payment-success',
               },
             },
           ],
         },
       ],
+    },
+    {
+      path: '/payment-success',
+      name: 'payment-success',
+      component: () => import('@/views/PaymentSuccess.vue'),
     },
     {
       path: '/login',
