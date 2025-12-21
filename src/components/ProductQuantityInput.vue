@@ -3,23 +3,21 @@ import { ref } from 'vue'
 
 const props = defineProps<{
   productNums: number
-  productId?: string
+  productId: string
   inputQuantity?: number
 }>()
 
 const emit = defineEmits<{
-  emitQuantity: [qty: number, productId?: string]
+  emitQuantity: [qty: number, productId: string]
 }>()
 
 const emitQuantity = (qty: number) => {
-  if (props.productId) {
-    emit('emitQuantity', qty, props.productId)
-  } else {
-    emit('emitQuantity', qty)
-  }
+  emit('emitQuantity', qty, props.productId)
 }
 const purchaseQty = ref<number>(props.inputQuantity || 1)
-
+const initialQty = () => {
+  purchaseQty.value = 1
+}
 type handleInput = 'plus' | 'minus'
 const handleQuantity = (mode: handleInput) => {
   if (mode === 'plus') {
@@ -30,6 +28,10 @@ const handleQuantity = (mode: handleInput) => {
 
   emitQuantity(purchaseQty.value)
 }
+
+defineExpose({
+  initialQty,
+})
 </script>
 <template>
   <div class="input-group quantity-input-group">

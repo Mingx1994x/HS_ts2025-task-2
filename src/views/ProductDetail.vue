@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, useTemplateRef, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCartStore } from '@/stores/cart'
 import { getProductById, getProductsAll } from '@/api/customerProducts'
@@ -11,7 +11,6 @@ import ProductQuantityInput from '@/components/ProductQuantityInput.vue'
 import type { TProduct, TProductContentFormat } from '@/types/customer/product'
 
 const route = useRoute()
-// const purchaseQty = ref<number>(1)
 const contentData = ref<TProductContentFormat>({
   ability: '',
   rarity: 0,
@@ -42,7 +41,6 @@ const getProduct = async () => {
     const { content } = res.data.product
     contentData.value = formatContent(content)
   } catch (error) {
-    console.error(error)
     alert('取得商品資料錯誤')
   }
 }
@@ -54,7 +52,6 @@ const getOtherProducts = async () => {
     const restProduct = allProducts.filter((item) => item.id !== product.value.id)
     otherProducts.value = pickRandomItemsByCategory(restProduct, 4)
   } catch (error) {
-    console.error(error)
     alert('取得其他商品資料錯誤')
   }
 }
@@ -76,20 +73,15 @@ const renderContentData = (key: TProductContentFormatKey): string => {
   return contentData.value[key]
 }
 
-// type handleInput = 'plus' | 'minus'
-// const handleQuantity = (mode: handleInput) => {
-//   if (mode === 'plus') {
-//     purchaseQty.value += 1
-//   } else {
-//     purchaseQty.value -= 1
-//   }
-// }
+const quantityInput =
+  useTemplateRef<InstanceType<typeof ProductQuantityInput>>('productQuantityInputRef')
 
 watch(
   () => route.params.id,
   async (newId) => {
     if (newId) {
       await getProduct()
+      quantityInput.value?.initialQty()
       getOtherProducts()
     }
   },
@@ -98,7 +90,6 @@ watch(
 
 // 購物車 pinia
 const cartStore = useCartStore()
-// const {cartItems}=storeToRefs(cartStore)
 const { addCart } = cartStore
 
 const purchaseQty = ref<number>(1)
@@ -109,6 +100,7 @@ function getQuantity(qty: number) {
 function handleAddToCart() {
   try {
     addCart(product.value, purchaseQty.value)
+    quantityInput.value?.initialQty()
     alert('加入購物車成功')
   } catch (error) {
     alert(error instanceof Error ? error.message : '加入裝備失敗,請稍後再試')
@@ -167,32 +159,12 @@ function handleAddToCart() {
           <div class="buy-action-box">
             <div class="row g-2 align-items-center">
               <div class="col-6">
-                <ProductQuantityInput :product-nums="product.num" @emit-quantity="getQuantity" />
-                <!-- <div class="input-group quantity-input-group">
-                  <button
-                    class="btn btn-outline-primary border-end-0"
-                    type="button"
-                    :disabled="purchaseQty === 1"
-                    @click="handleQuantity('minus')"
-                  >
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <input
-                    type="text"
-                    class="form-control text-center shadow-none"
-                    v-model="purchaseQty"
-                    :max="product.num"
-                    readonly
-                  />
-                  <button
-                    class="btn btn-outline-primary border-start-0"
-                    type="button"
-                    :disabled="purchaseQty === product.num"
-                    @click="handleQuantity('plus')"
-                  >
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div> -->
+                <ProductQuantityInput
+                  ref="productQuantityInputRef"
+                  :product-nums="product.num"
+                  :product-id="product.id"
+                  @emit-quantity="getQuantity"
+                />
               </div>
               <div class="col-6">
                 <button
